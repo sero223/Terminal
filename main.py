@@ -46,12 +46,20 @@ def main():
         return False
 
     if command == "cd":
-        splitted = inp.split()
-        directory = str(splitted[1])
-        if directory == "~" or len(splitted) == 1:
-            os.chdir(os.path.expanduser("~"))
+        if len(argv) == 1 or argv[1] == "~":
+            target = os.path.expanduser("~")
         else:
-            os.chdir(directory)
+            target = argv[1]
+
+        try:
+            os.chdir(target)
+        except FileNotFoundError:
+            sys.stdout.write(f"cd: {target}: No such file or directory\n")
+        except NotADirectoryError:
+            sys.stdout.write(f"cd: {target}: Not a directory\n")
+        except PermissionError:
+            sys.stdout.write(f"cd: {target}: Permission denied\n")
+
         return False
 
     # ---- external commands ----
