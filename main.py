@@ -1,5 +1,5 @@
 import os
-import sys
+import sys, shlex
 import shutil
 
 BUILTINS = ["echo", "type", "exit", "pwd", "cd"]
@@ -14,17 +14,15 @@ def builtin_type(cmd):
         sys.stdout.write(f"{cmd} is {found}\n")
     else:
         sys.stdout.write(f"{cmd}: not found\n")
-
-
+        
+        
 def main():
     sys.stdout.write("$ ")
     sys.stdout.flush()
 
-    inp = input().strip()
-    if not inp:
-        return False
+    inp = input()
+    tokens = shlex.split(inp)
 
-    tokens = inp.split()
     command = tokens[0]
     argv = tokens
 
@@ -33,6 +31,7 @@ def main():
         return True
 
     if command == "echo":
+        print(argv)
         sys.stdout.write(" ".join(argv[1:]) + "\n")
         return False
 
