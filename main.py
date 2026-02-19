@@ -20,28 +20,39 @@ def split_command(line):
     tokens = []
     current = []
     escape = False
+    in_single = False
+    in_double = False
 
     for ch in line:
         if escape:
             current.append(ch)
             escape = False
-        elif ch == "\\":
+
+        elif ch == "\\" and not in_single:
             escape = True
-        elif ch.isspace():
+
+        elif ch == "'" and not in_double:
+            in_single = not in_single
+
+        elif ch == '"' and not in_single:
+            in_double = not in_double
+
+        elif ch.isspace() and not in_single and not in_double:
             if current:
                 tokens.append("".join(current))
                 current = []
+
         else:
             current.append(ch)
 
     if escape:
-        # trailing backslash → treated as literal backslash
         current.append("\\")
 
     if current:
         tokens.append("".join(current))
 
     return tokens
+
 
 
 def main():
