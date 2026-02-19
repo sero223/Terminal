@@ -51,7 +51,7 @@ def main():
     inp = input()
     tokens = split_command(inp)
     if not tokens:
-        return Flase
+        return False
 	
 
     command = tokens[0]
