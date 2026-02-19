@@ -4,6 +4,7 @@ import shutil
 
 BUILTINS = ["echo", "type", "exit", "pwd", "cd"]
 
+
 def builtin_type(cmd):
     if cmd in BUILTINS:
         sys.stdout.write(f"{cmd} is a shell builtin\n")
@@ -14,14 +15,44 @@ def builtin_type(cmd):
         sys.stdout.write(f"{cmd} is {found}\n")
     else:
         sys.stdout.write(f"{cmd}: not found\n")
-        
-        
+
+def split_command(line):
+    tokens = []
+    current = []
+    escape = False
+
+    for ch in line:
+        if escape:
+            current.append(ch)
+            escape = False
+        elif ch == "\\":
+            escape = True
+        elif ch.isspace():
+            if current:
+                tokens.append("".join(current))
+                current = []
+        else:
+            current.append(ch)
+
+    if escape:
+        # trailing backslash → treated as literal backslash
+        current.append("\\")
+
+    if current:
+        tokens.append("".join(current))
+
+    return tokens
+
+
 def main():
     sys.stdout.write("$ ")
     sys.stdout.flush()
 
     inp = input()
-    tokens = shlex.split(inp)
+    tokens = split_command(inp)
+    if not tokens:
+        return Flase
+	
 
     command = tokens[0]
     argv = tokens
@@ -31,7 +62,6 @@ def main():
         return True
 
     if command == "echo":
-        print(argv)
         sys.stdout.write(" ".join(argv[1:]) + "\n")
         return False
 
