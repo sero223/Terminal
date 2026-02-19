@@ -1,2 +1,3 @@
 # Terminal
-A simpel self made terminal with more upcoming features
+A simpel self made terminal with more upcoming features later on
+
