@@ -115,7 +115,3 @@ A simple command-line shell implemented in Python, supporting **built-in command
 - Improve **tab completion** and history
 
 ---
-
-## License
-
-This project is licensed under the MIT License – see the LICENSE file for details.
